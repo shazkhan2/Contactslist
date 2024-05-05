@@ -4,21 +4,18 @@ import { Form } from "react-bootstrap";
 const EditContact = ({ contactId }) => {
   const [contact, setContact] = useState(null);
 
-
-  const fetchContactDetails = async () => {
-    try {
-      const contactResponse = await fetch(`http://localhost:5000/api/contacts/${contactId}`);
-      const contactData = await contactResponse.json();
-      setContact(contactData);
-    } catch (error) {
-      console.error("Error fetching contact details:", error);
-    }
-  };
-
   useEffect(() => {
-    if (contactId) {
-      fetchContactDetails();
-    }
+    const fetchContactDetails = async () => {
+      try {
+        const contactResponse = await fetch(`http://localhost:5000/api/contacts/${contactId}`);
+        const contactData = await contactResponse.json();
+        setContact(contactData);
+      } catch (error) {
+        console.error("Error fetching contact details:", error);
+      }
+    };
+
+    fetchContactDetails();
   }, [contactId]);
 
   const handleInputChange = (e) => {
@@ -32,26 +29,27 @@ const EditContact = ({ contactId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const method = contactId ? "PUT" : "POST";
-      const url = contactId ? `/api/contacts/${contactId}` : "/api/contacts";
-      const response = await fetch(url, {
-        method,
+      const response = await fetch(`/api/contacts/${contactId}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(contact),
       });
       if (response.ok) {
+        console.log("Contact updated successfully");
       } else {
-        console.error("Failed to save contact");
+        console.error("Failed to update contact");
       }
     } catch (error) {
-      console.error("Error saving contact:", error);
+      console.error("Error updating contact:", error);
     }
   };
-if (contact==null) {
-  return;
-}
+
+  if (!contact) {
+    return <div>Loading contact details...</div>;
+  }
+
   return (
     <Form id="contact-form" onSubmit={handleSubmit}>
       <p>
@@ -97,7 +95,7 @@ if (contact==null) {
       <label>
         <span>Notes</span>
         <textarea
-          value={contact.notes}
+          value={contact.notes || " "}
           onChange={handleInputChange}
           name="notes"
           rows={6}

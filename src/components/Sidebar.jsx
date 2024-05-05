@@ -8,14 +8,15 @@ const Sidebar = () => {
   const [contacts, setContacts] = useState([]);
   const [filteredContacts, setFilteredContacts] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [showNewContactForm, setShowNewContactForm] = useState(false); 
+  
   useEffect(() => {
     const fetchContactsList = async () => {
       try {
         const contactsResponse = await fetch("http://localhost:5000/api/contacts");
         const contactsData = await contactsResponse.json();
         setContacts(contactsData);
-        setFilteredContacts(contactsData); 
+        setFilteredContacts(contactsData);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching contacts:", error);
@@ -40,6 +41,7 @@ const Sidebar = () => {
         const contactsData = await contactsResponse.json();
         setContacts(contactsData);
         setFilteredContacts(contactsData);
+        setShowNewContactForm(false); 
       } else {
         console.error("Failed to add contact");
       }
@@ -58,8 +60,10 @@ const Sidebar = () => {
         <h2>Remix contacts</h2>
       </div>
       <SearchBar contacts={contacts} setFilteredContacts={setFilteredContacts} />
-      <NewContact addContact={addContact} />
-      <ContactDetails />
+      {showNewContactForm && <NewContact addContact={addContact} />}
+      <button onClick={() => setShowNewContactForm(!showNewContactForm)}>
+        {showNewContactForm ? "Cancel" : "Add New Contact"}
+      </button>
       <div className="contactsList">
         <nav>
           <ul>

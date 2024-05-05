@@ -27,12 +27,12 @@ router.post("/", async (request, response) => {
   }
 });
 
-// Get - /api/contacts/:id - Return the contact by id
-router.get("/:id", async (request, response) => {
-  const { id } = request.params; 
+// GET - /api/contacts/:contactId - Return the contact by id
+router.get("/:contactId", async (request, response) => {
+  const { contactId } = request.params; 
 
   try {
-    const contact = await knex("contacts").select("*").where({ id }).first(); 
+    const contact = await knex("contacts").select("*").where({ id: contactId }).first(); 
     if (contact) {
       response.json(contact);
     } else {
@@ -44,14 +44,14 @@ router.get("/:id", async (request, response) => {
   }
 });
 
-// PUT - /api/contacts/:id - Update the contact by id
-router.put("/:id", async (request, response) => {
+// PUT - /api/contacts/:contactId - Update the contact by id
+router.put("/:contactId", async (request, response) => {
   try {
-    const { id } = request.params;
+    const { contactId } = request.params;
     const updatedContact = request.body;
 
     const results = await knex("contacts")
-      .update(updatedContact).where({ id });
+      .update(updatedContact).where({ id: contactId });
 
     if (results) {
       return response.json({ message: "Contact updated successfully" });
@@ -64,18 +64,18 @@ router.put("/:id", async (request, response) => {
   }
 });
 
-// DELETE - /api/contacts/:id - Delete the contact by id
-router.delete("/:id", async (request, response) => {
+// DELETE - /api/contacts/:contactId - Delete the contact by id
+router.delete("/:contactId", async (request, response) => {
   try {
-    const { id } = request.params;
+    const { contactId } = request.params;
 
-    const contact = await knex("contacts").select("*").where({ id }).first();
+    const contact = await knex("contacts").select("*").where({ id: contactId }).first();
 
     if (!contact) {
       return response.status(404).json({ error: "Contact not found" });
     }
 
-    await knex("contacts").where({ id }).del();
+    await knex("contacts").where({ id: contactId }).del();
 
     response.json({ message: "Contact deleted successfully" });
   } catch (error) {
@@ -84,13 +84,13 @@ router.delete("/:id", async (request, response) => {
   }
 });
 
-// POST - /api/contacts/:id/favorite - Toggle the favorite status
-router.post("/:id/favorite", async (request, response) => {
+// POST - /api/contacts/:contactId/favorite - Toggle the favorite status
+router.post("/:contactId/favorite", async (request, response) => {
   try {
-    const { id } = request.params;
+    const { contactId } = request.params;
     const { favorite } = request.body;
 
-    await knex("contacts").update({ favorite }).where({ id });
+    await knex("contacts").update({ favorite }).where({ id: contactId });
 
     response.json({ message: "Favorite status updated successfully" });
   } catch (error) {

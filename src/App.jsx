@@ -11,9 +11,9 @@ function App() {
       <div className="app">
         <Sidebar />
         <Switch>
-          <Route exact path="/contacts/:id" component={ContactDetails} />
-          <Route path="/contacts/:id/edit" component={EditContact} />
-          <Route path="/contacts/:id/delete" component={DeleteContact} />
+          <Route exact path="/contacts/:contactId" component={ContactDetails} />
+          <Route path="/contacts/:contactId/edit" component={EditContact} />
+          <Route path="/contacts/:contactId/delete" component={DeleteContact} />
         </Switch>
       </div>
     </Router>

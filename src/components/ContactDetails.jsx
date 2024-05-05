@@ -8,6 +8,8 @@ const ContactDetails = () => {
   const { contactId } = useParams();
   const [contact, setContact] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const fetchContactDetails = async () => {
@@ -28,6 +30,14 @@ const ContactDetails = () => {
   if (loading) {
     return <div>Loading contact details...</div>;
   }
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleDeleteClick = () => {
+    setIsDeleting(true);
+  };
 
   return (
     <div id="contact">
@@ -53,12 +63,13 @@ const ContactDetails = () => {
         <Favorite contact={contact} />
 
         <div>
-          <button>Edit</button>
-          <EditContact />
-          <button>Delete</button>
-          <DeleteContact contactId={contactId} />
+          <button onClick={handleEditClick}>Edit</button>
+          <button onClick={handleDeleteClick}>Delete</button>
         </div>
       </div>
+
+      {isEditing && <EditContact contactId={contactId} />}
+      {isDeleting && <DeleteContact contactId={contactId} />}
     </div>
   );
 };

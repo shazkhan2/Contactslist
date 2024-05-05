@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import NewContact from "./NewContact";
+import ContactDetails from "./ContactDetails";
 
 const Sidebar = () => {
   const [contacts, setContacts] = useState([]);
@@ -11,7 +12,7 @@ const Sidebar = () => {
   useEffect(() => {
     const fetchContactsList = async () => {
       try {
-        const contactsResponse = await fetch("/api/contacts");
+        const contactsResponse = await fetch("http://localhost:5000/api/contacts");
         const contactsData = await contactsResponse.json();
         setContacts(contactsData);
         setFilteredContacts(contactsData); 
@@ -27,7 +28,7 @@ const Sidebar = () => {
 
   const addContact = async (newContact) => {
     try {
-      const response = await fetch("/api/contacts", {
+      const response = await fetch("http://localhost:5000/api/contacts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -35,7 +36,7 @@ const Sidebar = () => {
         body: JSON.stringify(newContact),
       });
       if (response.ok) {
-        const contactsResponse = await fetch("/api/contacts");
+        const contactsResponse = await fetch("http://localhost:5000/api/contacts");
         const contactsData = await contactsResponse.json();
         setContacts(contactsData);
         setFilteredContacts(contactsData);
@@ -58,6 +59,7 @@ const Sidebar = () => {
       </div>
       <SearchBar contacts={contacts} setFilteredContacts={setFilteredContacts} />
       <NewContact addContact={addContact} />
+      <ContactDetails />
       <div className="contactsList">
         <nav>
           <ul>

@@ -12,7 +12,7 @@ const ContactDetails = () => {
   useEffect(() => {
     const fetchContactDetails = async () => {
       try {
-        const contactResponse = await fetch(`/api/contacts/${contactId}`);
+        const contactResponse = await fetch(`http://localhost:5000/api/contacts/${contactId}`);
         const contactData = await contactResponse.json();
         setContact(contactData);
         setLoading(false);

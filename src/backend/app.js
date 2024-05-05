@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const router = express.Router();
 const path = require("path");
-const contactsRouter = require("./backend/api/contacts");
+const contactsRouter = require("./api/contacts");
 //The body function has changed after version 15 while I am using 16. If put request doesnt work then install bodyparser
 //const bodyParser = require("body-parser");
 //npm install --save body-parser

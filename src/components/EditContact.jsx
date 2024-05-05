@@ -7,7 +7,7 @@ const EditContact = ({ contactId }) => {
 
   const fetchContactDetails = async () => {
     try {
-      const contactResponse = await fetch(`/api/contacts/${contactId}`);
+      const contactResponse = await fetch(`http://localhost:5000/api/contacts/${contactId}`);
       const contactData = await contactResponse.json();
       setContact(contactData);
     } catch (error) {
@@ -49,7 +49,9 @@ const EditContact = ({ contactId }) => {
       console.error("Error saving contact:", error);
     }
   };
-
+if (contact==null) {
+  return;
+}
   return (
     <Form id="contact-form" onSubmit={handleSubmit}>
       <p>

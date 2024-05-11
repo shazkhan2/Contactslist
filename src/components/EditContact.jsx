@@ -3,6 +3,7 @@ import { Form } from "react-bootstrap";
 
 const EditContact = ({ contactId }) => {
   const [contact, setContact] = useState(null);
+  const [formVisible, setFormVisible] = useState(true); 
 
   useEffect(() => {
     const fetchContactDetails = async () => {
@@ -29,15 +30,17 @@ const EditContact = ({ contactId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`/api/contacts/${contactId}`, {
+      const { createdAt, ...contactWithoutcreatedAt } = contact;
+      const response = await fetch(`http://localhost:5000/api/contacts/${contactId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(contact),
+        body: JSON.stringify(contactWithoutcreatedAt),
       });
       if (response.ok) {
         console.log("Contact updated successfully");
+        setFormVisible(false); 
       } else {
         console.error("Failed to update contact");
       }
@@ -48,6 +51,10 @@ const EditContact = ({ contactId }) => {
 
   if (!contact) {
     return <div>Loading contact details...</div>;
+  }
+
+  if (!formVisible) {
+    return <div>Contact updated successfully. Form closed.</div>;
   }
 
   return (

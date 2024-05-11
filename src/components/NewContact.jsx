@@ -20,7 +20,6 @@ const NewContact = ({ addContact }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     addContact(contact);
-    // Clear form after submission
     setContact({
       first: "",
       last: "",
